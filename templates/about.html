@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}About — {{ product_name }}{% endblock %}
+{% block content %}
+<section class="page-card glass prose">
+  <p class="eyebrow">The Studio</p>
+  <h1>About {{ product_name }}</h1>
+  <p>
+    {{ product_name }} is a high-precision, privacy-first translation studio for seamlessly moving between
+    <strong>English, Kannada, Hindi, Tamil, Telugu, Spanish, and French</strong>. It is built to feel premium,
+    respond instantly, and connect with authentic translation providers — never producing fake or hardcoded text.
+  </p>
+  <p>
+    Indian-language translations are handled by Sarvam AI, and European pairs are powered by MyMemory.
+    All your history, settings, and personal preferences remain private on your computer.
+    There is no cloud tracking, no sign-up wall, and no data profiling.
+  </p>
+  <h2>Key Capabilities</h2>
+  <ul>
+    <li><strong>Two-Panel Translation Studio:</strong> Ergonomic source and destination panels with real-time word counting and language swapping.</li>
+    <li><strong>Voice Dictation & Speech Playback:</strong> Dictate directly via browser speech recognition and listen to accurate native pronunciations.</li>
+    <li><strong>Smart Language Detection:</strong> Automatic linguistic detection so you don't have to manually pick the source tongue.</li>
+    <li><strong>Private On-Device History:</strong> Full SQLite translation journal stored locally, with quick reuse and one-click deletion.</li>
+    <li><strong>Aurora Studio Aesthetics:</strong> Tailored dark and light themes, 3D rotating multilingual Earth visualization, and fluid glassmorphism.</li>
+  </ul>
+</section>
+{% endblock %}

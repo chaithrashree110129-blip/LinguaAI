@@ -1,0 +1,376 @@
+{% extends "base.html" %}
+{% block title %}{{ product_name }} — Translate{% endblock %}
+{% block content %}
+
+<!-- ================= SECTION 2: HERO SECTION ================= -->
+<section class="hero-section glass" aria-label="Hero">
+  <div class="hero-left">
+    <div class="eyebrow-row">
+      <span class="eyebrow-pill">Next-Gen Translation Studio</span>
+      <span class="version-tag">Local & Private</span>
+    </div>
+
+    <h1 class="hero-title">{{ product_name }}</h1>
+    <p class="hero-tagline">Break language barriers. Connect with the world.</p>
+
+    <!-- Personalized Greeting -->
+    <div class="user-greeting-card">
+      <div class="greeting-avatar" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <div class="greeting-text">
+        <p class="greeting-lead">Welcome, <strong id="user-display-name" class="user-highlight">{{ user_name|default('Friend', true) }}</strong>!</p>
+        <p class="greeting-sub">Ready to translate something today?</p>
+      </div>
+      <a href="{{ url_for('welcome', reset=1) }}" class="greeting-edit-link" title="Change name">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Hero Right: 3D Animated Rotating Earth with Orbiting Discs (matching demo) -->
+  <div class="hero-right" aria-hidden="true">
+    <div class="hero-globe-container">
+      <!-- Ambient background glyphs as shown in demo -->
+      <span class="ambient-glyph ag-left">அ</span>
+      <span class="ambient-glyph ag-right">అ</span>
+
+      <div class="globe-stage">
+        <!-- Realistic Wireframe Globe -->
+        <div class="demo-globe">
+          <div class="demo-globe-sphere">
+            <svg viewBox="0 0 240 240" class="globe-wireframe-svg" width="240" height="240">
+              <defs>
+                <radialGradient id="globeGrad" cx="38%" cy="32%" r="65%">
+                  <stop offset="0%" stop-color="#244b66"/>
+                  <stop offset="35%" stop-color="#143046"/>
+                  <stop offset="70%" stop-color="#0b1e2c"/>
+                  <stop offset="100%" stop-color="#040b13"/>
+                </radialGradient>
+                <radialGradient id="globeSpecular" cx="38%" cy="32%" r="35%">
+                  <stop offset="0%" stop-color="rgba(140, 210, 240, 0.5)"/>
+                  <stop offset="40%" stop-color="rgba(60, 140, 180, 0.15)"/>
+                  <stop offset="100%" stop-color="transparent"/>
+                </radialGradient>
+                <clipPath id="globeClip">
+                  <circle cx="120" cy="120" r="110"/>
+                </clipPath>
+              </defs>
+
+              <!-- Base Globe Sphere -->
+              <circle cx="120" cy="120" r="110" fill="url(#globeGrad)"/>
+
+              <!-- Latitude & Longitude Wireframe Lines -->
+              <g clip-path="url(#globeClip)">
+                <!-- Latitude Rings -->
+                <ellipse cx="120" cy="35" rx="72" ry="14" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.6"/>
+                <ellipse cx="120" cy="60" rx="96" ry="18" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.65"/>
+                <ellipse cx="120" cy="88" rx="108" ry="21" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.7"/>
+                <ellipse cx="120" cy="120" rx="110" ry="22" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.8"/>
+                <ellipse cx="120" cy="152" rx="108" ry="21" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.7"/>
+                <ellipse cx="120" cy="180" rx="96" ry="18" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.65"/>
+                <ellipse cx="120" cy="205" rx="72" ry="14" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.6"/>
+
+                <!-- Longitude Meridians -->
+                <ellipse cx="120" cy="120" rx="18" ry="110" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.7"/>
+                <ellipse cx="120" cy="120" rx="46" ry="110" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.7"/>
+                <ellipse cx="120" cy="120" rx="74" ry="110" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.7"/>
+                <ellipse cx="120" cy="120" rx="96" ry="110" fill="none" stroke="#336b8d" stroke-width="1.2" opacity="0.65"/>
+                <line x1="120" y1="10" x2="120" y2="230" stroke="#336b8d" stroke-width="1.2" opacity="0.8"/>
+              </g>
+
+              <!-- Specular highlight and outer rim -->
+              <circle cx="120" cy="120" r="110" fill="url(#globeSpecular)"/>
+              <circle cx="120" cy="120" r="110" fill="none" stroke="#3a7599" stroke-width="1.5" opacity="0.85"/>
+            </svg>
+          </div>
+
+          <!-- Primary Tilted 3D Orbit Track with Glowing Discs -->
+          <div class="orbit-plane orbit-plane-main">
+            <span class="orbit-track-ellipse"></span>
+            
+            <div class="orbit-disc disc-pos-1" title="English">
+              <div class="disc-coin"><span class="disc-char">A</span></div>
+            </div>
+            <div class="orbit-disc disc-pos-2" title="Kannada">
+              <div class="disc-coin"><span class="disc-char">ಕ</span></div>
+            </div>
+            <div class="orbit-disc disc-pos-3" title="Telugu">
+              <div class="disc-coin"><span class="disc-char">అ</span></div>
+            </div>
+            <div class="orbit-disc disc-pos-4" title="Hindi">
+              <div class="disc-coin"><span class="disc-char">अ</span></div>
+            </div>
+            <div class="orbit-disc disc-pos-5" title="Tamil">
+              <div class="disc-coin"><span class="disc-char">அ</span></div>
+            </div>
+            <div class="orbit-disc disc-pos-6" title="Spanish">
+              <div class="disc-coin"><span class="disc-char">ñ</span></div>
+            </div>
+          </div>
+
+          <!-- Secondary Counter-Orbit Track -->
+          <div class="orbit-plane orbit-plane-sub">
+            <span class="orbit-track-ellipse"></span>
+            <div class="orbit-disc disc-sub-1" title="French">
+              <div class="disc-coin"><span class="disc-char">ç</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 3: TWO-PANEL TRANSLATION WORKSPACE ================= -->
+<section class="workspace glass" id="workspace" aria-label="Translation Workspace">
+  <form method="post" action="{{ url_for('home') }}" id="translate-form" class="workspace-form">
+    <div class="two-panel-container">
+      
+      <!-- LEFT PANEL: SOURCE INPUT -->
+      <div class="panel panel-source">
+        <div class="panel-header">
+          <div class="lang-selector-group">
+            <span class="panel-header-label">From</span>
+            <select name="source_lang" id="source_lang" class="lang-select" aria-label="Source Language">
+              {% for code, name in source_languages.items() %}
+                <option value="{{ code }}" {% if source_lang == code %}selected{% endif %}>{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Microphone speech input button -->
+          <button
+            type="button"
+            class="btn-mic"
+            id="btn-mic"
+            title="Click to dictate (speech input)"
+            aria-label="Speech input dictation"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+            <span class="mic-wave" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div class="panel-body">
+          <textarea
+            name="input_text"
+            id="input_text"
+            rows="8"
+            maxlength="{{ max_input_chars }}"
+            placeholder="Type your sentence here, or click the microphone to speak…"
+            aria-label="Text to translate"
+          >{{ input_text }}</textarea>
+        </div>
+
+        <div class="panel-footer">
+          <div class="detected-info">
+            {% if detected_label %}
+              <span class="detected-badge" role="status">{{ detected_label }}</span>
+            {% else %}
+              <span class="char-count"><span id="char-used">0</span> / {{ max_input_chars }} chars</span>
+            {% endif %}
+          </div>
+          {% if detected_label %}
+            <span class="char-count"><span id="char-used">0</span> / {{ max_input_chars }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- CENTER SWAP BUTTON -->
+      <div class="panel-divider">
+        <button
+          class="btn-swap-panels"
+          type="submit"
+          name="action"
+          value="swap"
+          title="Swap source and target languages"
+          aria-label="Swap source and target languages"
+        >
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="16 3 21 8 16 13"></polyline>
+            <line x1="21" y1="8" x2="9" y2="8"></line>
+            <polyline points="8 21 3 16 8 11"></polyline>
+            <line x1="3" y1="16" x2="15" y2="16"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- RIGHT PANEL: TRANSLATION OUTPUT -->
+      <div class="panel panel-target">
+        <div class="panel-header">
+          <div class="lang-selector-group">
+            <span class="panel-header-label">To</span>
+            <select name="target_lang" id="target_lang" class="lang-select" aria-label="Target Language">
+              {% for code, name in supported_languages.items() %}
+                <option value="{{ code }}" {% if target_lang == code %}selected{% endif %}>{{ name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="panel-body output-shell">
+          <div
+            id="output_text"
+            class="output-well"
+            lang="{{ target_lang }}"
+            {% if output_text %}data-has-result="true"{% endif %}
+            aria-live="polite"
+          >{{ output_text }}</div>
+
+          <div id="output-loading" class="loading-overlay" hidden>
+            <span class="spinner" aria-hidden="true"></span>
+            <span>Translating with neural engine…</span>
+          </div>
+        </div>
+
+        <div class="panel-footer panel-actions-footer">
+          <span class="panel-footer-hint muted">Actions</span>
+          <div class="output-action-btns">
+            <button class="btn-action" type="button" id="btn-copy" data-copy-target="output_text" title="Copy translation to clipboard">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copy</span>
+            </button>
+
+            {% if listen_enabled %}
+              <button class="btn-action" type="button" id="btn-listen" data-listen-target="output_text" data-lang="{{ target_lang }}" title="Listen to pronunciation">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+                <span>Listen</span>
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROMINENT TRANSLATE BUTTON -->
+    <div class="translate-action-row">
+      <button class="btn-translate-main" type="submit" name="action" value="translate" id="btn-translate">
+        <span class="btn-sparkle" aria-hidden="true">✦</span>
+        <span class="btn-label">Translate Now</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+    </div>
+  </form>
+
+  <!-- Example chips -->
+  <div class="examples-container">
+    <span class="examples-tag">Try an example:</span>
+    <ul class="examples-list">
+      {% for sample in examples %}
+        <li>
+          <a class="example-chip" href="{{ url_for('home', example=loop.index0) }}">{{ sample.text }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<!-- ================= SECTION 4: ADDITIONAL FEATURES (6 CARDS) ================= -->
+<section class="features-section" aria-label="Key Features">
+  <div class="section-title-wrap">
+    <span class="eyebrow-pill">Intelligent Architecture</span>
+    <h2 class="section-title">Built for Seamless Multilingual Communication</h2>
+    <p class="section-sub">Experience privacy-first translation with precision-engineered AI capabilities.</p>
+  </div>
+
+  <div class="features-grid">
+    <!-- Card 1 -->
+    <div class="feature-card glass">
+      <div class="feature-icon icon-teal" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+      </div>
+      <h3>Automatic Language Detection</h3>
+      <p>Type freely in any language without guessing the source. Our local engine analyzes linguistic markers in real time.</p>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="feature-card glass">
+      <div class="feature-icon icon-gold" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+      </div>
+      <h3>Seven Supported Languages</h3>
+      <p>Fluent translation between English, Kannada, Hindi, Tamil, Telugu, Spanish, and French with native grammar accuracy.</p>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="feature-card glass">
+      <div class="feature-icon icon-teal" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+          <line x1="12" y1="19" x2="12" y2="23"></line>
+        </svg>
+      </div>
+      <h3>Voice Input & Text-to-Speech</h3>
+      <p>Dictate with speech-to-text directly in your browser and listen to accurate native pronunciations on demand.</p>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="feature-card glass">
+      <div class="feature-icon icon-gold" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <h3>Local Translation History</h3>
+      <p>Your notes and translations are securely stored in SQLite directly on this laptop. Reopen or delete past entries anytime.</p>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="feature-card glass">
+      <div class="feature-icon icon-teal" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </div>
+      <h3>Quick Clipboard Copy</h3>
+      <p>One-click instant copy with clipboard feedback, ready to paste into documents, emails, or messaging apps.</p>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="feature-card glass">
+      <div class="feature-icon icon-gold" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="16 3 21 8 16 13"></polyline>
+          <line x1="21" y1="8" x2="9" y2="8"></line>
+          <polyline points="8 21 3 16 8 11"></polyline>
+          <line x1="3" y1="16" x2="15" y2="16"></line>
+        </svg>
+      </div>
+      <h3>Instant Language Swap</h3>
+      <p>Flip between source and destination languages effortlessly, bringing the translated text back into the source panel.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

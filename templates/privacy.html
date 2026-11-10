@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy — {{ product_name }}{% endblock %}
+{% block content %}
+<section class="page-card glass prose">
+  <p class="eyebrow">Data & Security</p>
+  <h1>Privacy Policy</h1>
+  <p class="lede">
+    {{ product_name }} is designed with a local-first philosophy. We believe your translations and notes belong exclusively to you.
+  </p>
+
+  <h2>1. Zero Account Requirement</h2>
+  <p>
+    You do not need to create an account, log in, or provide an email address, password, or phone number to use this translator.
+  </p>
+
+  <h2>2. Local SQLite Storage</h2>
+  <p>
+    All your translation history, timestamps, and language settings are stored directly in a local SQLite database file on your own computer. This data is never synchronized to a central company cloud or sold to third parties.
+  </p>
+
+  <h2>3. Local Browser Preferences</h2>
+  <p>
+    Your name and display theme preference (Dark Aurora or Light Dawn) are preserved in your browser’s local storage and session cookies so you don’t have to re-enter them on every visit. You can update or delete your saved name at any time in <a href="{{ url_for('settings') }}">Settings</a>.
+  </p>
+
+  <h2>4. Voice & Speech Recognition</h2>
+  <p>
+    Microphone dictation and speech playback use your browser's built-in Web Speech API. Audio data is not recorded or retained on our server.
+  </p>
+
+  <h2>5. Translation Requests</h2>
+  <p>
+    When you submit text for translation, the engine transmits only the text snippet necessary to generate the translation. No tracking cookies or personal profile identifiers are attached to translation requests.
+  </p>
+
+  <p class="muted">Last updated: {{ current_year }}</p>
+</section>
+{% endblock %}

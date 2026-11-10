@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="{{ appearance_theme|default('dark') }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ product_name }}{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.svg') }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Noto+Sans:ital,wght@0,400;0,600;1,400&family=Noto+Sans+Kannada:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tokens.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/motion.css') }}">
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("ai_translator_theme") || localStorage.getItem("linguaai-theme");
+        if (theme === "light" || theme === "dark") {
+          document.documentElement.setAttribute("data-theme", theme);
+        }
+        {% if request.endpoint == 'home' %}
+        var username = localStorage.getItem("ai_translator_username") || localStorage.getItem("linguaai-username");
+        var urlParams = new URLSearchParams(window.location.search);
+        if (!username && !urlParams.has("skip_welcome")) {
+          window.location.replace("{{ url_for('welcome') }}");
+        }
+        {% endif %}
+      } catch (error) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="aurora-bg" aria-hidden="true">
+    <span class="orb orb-teal"></span>
+    <span class="orb orb-gold"></span>
+    <span class="glyph g1">ಕ</span>
+    <span class="glyph g2">अ</span>
+    <span class="glyph g3">அ</span>
+    <span class="glyph g4">అ</span>
+  </div>
+
+  <header class="site-header glass">
+    <a class="brand" href="{{ url_for('home') }}">
+      <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="36" height="36">
+      <span>{{ product_name }}</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="{{ url_for('home') }}" {% if request.endpoint == 'home' %}aria-current="page"{% endif %}>Home</a>
+      <a href="{{ url_for('history') }}" {% if request.endpoint == 'history' %}aria-current="page"{% endif %}>History</a>
+      <a href="{{ url_for('about') }}" {% if request.endpoint == 'about' %}aria-current="page"{% endif %}>About</a>
+      <a href="{{ url_for('settings') }}" {% if request.endpoint == 'settings' %}aria-current="page"{% endif %}>Settings</a>
+    </nav>
+  </header>
+
+  <main id="main" class="site-main page-enter">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-list" aria-live="polite">
+          {% for category, message in messages %}
+            <li class="flash flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer glass">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <strong>{{ product_name }}</strong>
+        <p class="muted">Real neural translations, local-first history, no account required.</p>
+      </div>
+      <div class="footer-links">
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+        <a href="{{ url_for('history') }}">History</a>
+        <a href="{{ url_for('settings') }}">Settings</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="muted footer-langs">Supported: English, Kannada, Hindi, Tamil, Telugu, Spanish, French</p>
+      <p class="muted">&copy; {{ current_year }} {{ product_name }}. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" hidden role="status"></div>
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}History — {{ product_name }}{% endblock %}
+{% block content %}
+<section class="page-card glass">
+  <div class="page-heading">
+    <h1>Translation history</h1>
+    <p class="lede">Saved securely on this laptop only. No cloud account or external logging.</p>
+  </div>
+
+  {% if items %}
+    {% if request.args.get("confirm_clear") %}
+      <form method="post" action="{{ url_for('clear_history') }}" class="danger-row confirm-box">
+        <p>Delete every saved translation on this laptop? This cannot be undone.</p>
+        <button class="btn-secondary" type="submit">Yes, delete all</button>
+        <a class="btn-secondary" href="{{ url_for('history') }}">Cancel</a>
+      </form>
+    {% else %}
+      <p class="danger-row">
+        <a class="btn-secondary" href="{{ url_for('history', confirm_clear=1) }}">Delete all history</a>
+      </p>
+    {% endif %}
+
+    <ul class="history-list">
+      {% for item in items %}
+        <li class="history-item glass">
+          <p class="meta">
+            {{ supported_languages.get(item.source_language, item.source_language) }}
+            →
+            {{ supported_languages.get(item.target_language, item.target_language) }}
+            · {{ item.created_at }}
+            {% if item.detected_language %}
+              · detected {{ supported_languages.get(item.detected_language, item.detected_language) }}
+            {% endif %}
+          </p>
+          <p class="history-original">{{ item.original_text }}</p>
+          <p class="history-translated">{{ item.translated_text }}</p>
+          <div class="panel-actions">
+            <form method="post" action="{{ url_for('reuse_history', item_id=item.id) }}">
+              <button class="btn-secondary" type="submit">Open in translator</button>
+            </form>
+            <form method="post" action="{{ url_for('delete_history_item', item_id=item.id) }}">
+              <button class="btn-secondary" type="submit">Delete</button>
+            </form>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">No translations saved yet. Successful translations will appear here.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Welcome — {{ product_name }}{% endblock %}
+{% block content %}
+<div class="welcome-container">
+  <section class="welcome-card glass" aria-label="Welcome to {{ product_name }}">
+    <div class="welcome-header">
+      <span class="eyebrow-badge">Aurora Studio</span>
+      <h1 class="welcome-title">{{ product_name }}</h1>
+      <p class="welcome-tagline">Break language barriers with intelligent translation.</p>
+    </div>
+
+    <div class="welcome-hero-visual" aria-hidden="true">
+      <div class="hero-image-wrapper">
+        <img
+          src="{{ url_for('static', filename='img/welcome-hero.jpg') }}"
+          alt="AI Language Translator Network Globe"
+          class="welcome-hero-img"
+          width="420"
+          height="420"
+        >
+        <div class="hero-glow-overlay"></div>
+      </div>
+    </div>
+
+    <div class="name-entry-card glass-inner">
+      <div class="name-entry-prompt">
+        <div class="user-avatar-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div>
+          <h2 class="name-prompt-heading">What should we call you?</h2>
+          <p class="name-prompt-sub">Personalize your translation workspace</p>
+        </div>
+      </div>
+
+      <form id="welcome-name-form" class="welcome-name-form" onsubmit="return false;">
+        <div class="input-glow-group">
+          <input
+            type="text"
+            id="user-name-input"
+            name="visitor_name"
+            class="glow-input"
+            placeholder="Enter your name"
+            maxlength="40"
+            autocomplete="name"
+            value="{{ user_name|default('', true) }}"
+            required
+            aria-label="Your name"
+          >
+        </div>
+        <p class="name-privacy-note">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          Your name stays private on this laptop — no sign-up or password required.
+        </p>
+
+        <div class="welcome-action-row">
+          <button type="submit" id="btn-start-translating" class="btn-start-translating">
+            <span>Start Translating</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+
+<script>
+  (function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var isReset = urlParams.get("reset") === "1" || urlParams.get("change") === "1";
+    var existing = localStorage.getItem("ai_translator_username") || localStorage.getItem("linguaai-username");
+    if (existing && !isReset) {
+      window.location.replace("{{ url_for('home') }}");
+    }
+  })();
+</script>
+{% endblock %}

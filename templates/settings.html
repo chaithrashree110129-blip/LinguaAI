@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Settings — {{ product_name }}{% endblock %}
+{% block content %}
+<section class="page-card glass">
+  <p class="eyebrow">Preferences</p>
+  <h1>Settings</h1>
+  <p class="lede">All choices are stored privately on this computer.</p>
+
+  <form method="post" class="settings-form" id="settings-form">
+    <!-- User Personalization -->
+    <fieldset class="settings-group">
+      <legend>Personalization</legend>
+      <label class="field">
+        <span>Your Name (for personalized greetings)</span>
+        <input
+          type="text"
+          name="user_name"
+          id="settings-username-input"
+          value="{{ user_name }}"
+          placeholder="Enter your name"
+          maxlength="40"
+        >
+      </label>
+      <div class="settings-helper-row">
+        <a href="{{ url_for('welcome', reset=1) }}" class="btn-secondary btn-sm">Revisit Welcome Screen</a>
+      </div>
+    </fieldset>
+
+    <!-- Language Defaults -->
+    <fieldset class="settings-group">
+      <legend>Language Defaults</legend>
+      <label class="field">
+        <span>Default source language</span>
+        <select name="default_source">
+          {% for code, name in source_languages.items() %}
+            <option value="{{ code }}" {% if default_source == code %}selected{% endif %}>{{ name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Default target language</span>
+        <select name="default_target">
+          {% for code, name in supported_languages.items() %}
+            <option value="{{ code }}" {% if default_target == code %}selected{% endif %}>{{ name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </fieldset>
+
+    <!-- Audio & Speech -->
+    <fieldset class="settings-group">
+      <legend>Speech & Voice</legend>
+      <label class="check">
+        <input type="checkbox" name="listen_enabled" {% if listen_enabled %}checked{% endif %}>
+        Enable Listen button for text-to-speech pronunciation
+      </label>
+    </fieldset>
+
+    <!-- Theme & Appearance -->
+    <fieldset class="theme-field settings-group">
+      <legend>Appearance</legend>
+      <label class="theme-option">
+        <input type="radio" name="theme" value="dark" {% if theme == 'dark' %}checked{% endif %}>
+        Dark (Aurora)
+      </label>
+      <label class="theme-option">
+        <input type="radio" name="theme" value="light" {% if theme == 'light' %}checked{% endif %}>
+        Light (Dawn)
+      </label>
+    </fieldset>
+
+    <div class="settings-submit-row">
+      <button class="btn-translate-main" type="submit">
+        <span class="btn-label">Save settings</span>
+      </button>
+    </div>
+  </form>
+</section>
+{% endblock %}
