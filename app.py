@@ -1,9 +1,4 @@
-"""
-AI Language Translator — Flask application.
-
-Run with:  python app.py
-Pages work. Live translation APIs are connected in a later phase.
-"""
+"""AI Language Translator Flask application."""
 
 from flask import Flask, flash, make_response, redirect, render_template, request, session, url_for
 
@@ -70,6 +65,7 @@ def home():
         state["source_lang"] = request.form.get("source_lang", "auto")
         state["target_lang"] = request.form.get("target_lang", "kn")
         state["input_text"] = request.form.get("input_text", "")
+        state["output_text"] = request.form.get("output_text", "")
         action = request.form.get("action", "translate")
 
         if action == "swap":
@@ -114,6 +110,7 @@ def _handle_swap(state, user_name=""):
 
     state["source_lang"] = target
     state["target_lang"] = source
+    state["detected_label"] = ""
     # Move translated text into the input box when we have any.
     if output_text:
         state["input_text"] = output_text
@@ -142,6 +139,7 @@ def _handle_translate(state, user_name=""):
             if result["confidence"] == "low":
                 flash(result.get("message") or "Detection confidence is low.", "warning")
             source = detected_code
+            state["source_lang"] = detected_code
 
         translated = translator.translate(text, source, target)
         state["output_text"] = translated["translated_text"]
@@ -155,12 +153,6 @@ def _handle_translate(state, user_name=""):
         flash("Translation complete.", "success")
     except (translator.ValidationError, translator.TranslationError, DetectionError) as error:
         flash(error.message, "error")
-        state["output_text"] = ""
-    except Exception:
-        flash(
-            "Something went wrong while translating. Please try again in a moment.",
-            "error",
-        )
         state["output_text"] = ""
 
     return render_template(

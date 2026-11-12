@@ -33,7 +33,10 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 
 Edit `.env` in Notepad:
 1. Set `FLASK_SECRET_KEY` to any long random sentence.
-2. (Optional for later API wiring): Add a Sarvam API key.
+2. Set `SARVAM_API_KEY` to a valid API key from [Sarvam AI](https://www.sarvam.ai/). This is required for English, Kannada, Hindi, Tamil, and Telugu translations.
+3. MyMemory handles Spanish and French translations without an API key. `MYMEMORY_EMAIL` is optional.
+
+Automatic detection works locally for the supported languages. Translation text is sent to Sarvam AI for English/Indian-language pairs or MyMemory when Spanish/French is involved; see the [Privacy Policy](templates/privacy.html) and each provider's terms before submitting sensitive text.
 
 ---
 

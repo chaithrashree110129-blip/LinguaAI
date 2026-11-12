@@ -114,17 +114,69 @@
   // 6. Character Count Tracker
   const input = document.getElementById("input_text");
   const used = document.getElementById("char-used");
-  if (input && used) {
-    const updateCount = function () {
+  const updateCount = function () {
+    if (input && used) {
       used.textContent = String(input.value.length);
-    };
+    }
+  };
+  if (input && used) {
     updateCount();
     input.addEventListener("input", updateCount);
   }
 
-  // 7. Form Submission Loading Overlay
+  // 7. Clear and swap workspace content
   const form = document.getElementById("translate-form");
   const loading = document.getElementById("output-loading");
+  const output = document.getElementById("output_text");
+  const outputState = document.getElementById("output_text_state");
+  const sourceSelect = document.getElementById("source_lang");
+  const targetSelect = document.getElementById("target_lang");
+  const clearBtn = document.getElementById("btn-clear");
+  const swapBtn = document.querySelector(".btn-swap-panels");
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", function () {
+      if (input) input.value = "";
+      if (output) {
+        output.textContent = "";
+        output.removeAttribute("data-has-result");
+      }
+      if (outputState) outputState.value = "";
+      const detectedBadge = document.querySelector(".detected-badge");
+      if (detectedBadge) detectedBadge.remove();
+      updateCount();
+      if (input) input.focus();
+    });
+  }
+
+  if (form && swapBtn) {
+    form.addEventListener("submit", function (event) {
+      if (event.submitter !== swapBtn) return;
+      event.preventDefault();
+      if (!sourceSelect || !targetSelect || sourceSelect.value === "auto") {
+        toast("Choose a source language before swapping.");
+        return;
+      }
+
+      const oldSource = sourceSelect.value;
+      sourceSelect.value = targetSelect.value;
+      targetSelect.value = oldSource;
+      if (input && output && output.textContent) {
+        const sourceText = input.value;
+        input.value = output.textContent;
+        output.textContent = sourceText;
+        if (outputState) outputState.value = sourceText;
+        output.setAttribute("lang", targetSelect.value);
+        if (sourceText) output.setAttribute("data-has-result", "true");
+        else output.removeAttribute("data-has-result");
+      }
+      const detectedBadge = document.querySelector(".detected-badge");
+      if (detectedBadge) detectedBadge.remove();
+      updateCount();
+    });
+  }
+
+  // 8. Form Submission Loading Overlay
   if (form && loading) {
     form.addEventListener("submit", function (event) {
       const submitter = event.submitter;
@@ -134,7 +186,7 @@
     });
   }
 
-  // 8. Clipboard Copy Action
+  // 9. Clipboard Copy Action
   const copyBtn = document.getElementById("btn-copy");
   if (copyBtn) {
     copyBtn.addEventListener("click", async function () {
@@ -145,7 +197,20 @@
         return;
       }
       try {
-        await navigator.clipboard.writeText(text);
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const temporary = document.createElement("textarea");
+          temporary.value = text;
+          temporary.setAttribute("readonly", "");
+          temporary.style.position = "fixed";
+          temporary.style.opacity = "0";
+          document.body.appendChild(temporary);
+          temporary.select();
+          const copied = document.execCommand("copy");
+          temporary.remove();
+          if (!copied) throw new Error("Clipboard access was denied.");
+        }
         toast("Copied translation to clipboard!");
       } catch (error) {
         toast("Copy failed. You can select the text and copy manually.");
