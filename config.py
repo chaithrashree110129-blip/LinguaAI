@@ -23,8 +23,14 @@ if SARVAM_API_KEY.lower() in _SARVAM_API_KEY_PLACEHOLDERS:
 if MYMEMORY_EMAIL.lower() in {"your_email@example.com", "your_email"}:
     MYMEMORY_EMAIL = ""
 
-DATA_DIR = ROOT_DIR / "data"
+
+if os.getenv("VERCEL"):
+    DATA_DIR = Path("/tmp")
+else:
+    DATA_DIR = ROOT_DIR / "data"
+
 DATABASE_PATH = DATA_DIR / "linguaai.db"
+
 
 # Modest limit so a single request cannot overload the APIs.
 MAX_INPUT_CHARS = 2000
