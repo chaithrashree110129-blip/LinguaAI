@@ -9,3 +9,5 @@ data/*.db
 .DS_Store
 Thumbs.db
 instance/
+*.lnk
+icudtl.dat
