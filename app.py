@@ -92,8 +92,6 @@ def home():
 def _handle_swap(state, user_name=""):
     source = state["source_lang"]
     target = state["target_lang"]
-    input_text = state["input_text"]
-    output_text = state.get("output_text", "")
 
     if source == "auto":
         flash(
@@ -111,10 +109,7 @@ def _handle_swap(state, user_name=""):
     state["source_lang"] = target
     state["target_lang"] = source
     state["detected_label"] = ""
-    # Move translated text into the input box when we have any.
-    if output_text:
-        state["input_text"] = output_text
-        state["output_text"] = input_text
+    # Keep source input and translated output in their own panels when swapping languages.
     return render_template(
         "index.html",
         **state,

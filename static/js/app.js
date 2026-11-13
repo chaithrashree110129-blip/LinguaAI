@@ -161,18 +161,12 @@
       const oldSource = sourceSelect.value;
       sourceSelect.value = targetSelect.value;
       targetSelect.value = oldSource;
-      if (input && output && output.textContent) {
-        const sourceText = input.value;
-        input.value = output.textContent;
-        output.textContent = sourceText;
-        if (outputState) outputState.value = sourceText;
-        output.setAttribute("lang", targetSelect.value);
-        if (sourceText) output.setAttribute("data-has-result", "true");
-        else output.removeAttribute("data-has-result");
-      }
+      // Swap language selections only; never move text between the source and output panels.
+      if (output) output.setAttribute("lang", targetSelect.value);
+      const listenBtn = document.getElementById("btn-listen");
+      if (listenBtn) listenBtn.setAttribute("data-lang", targetSelect.value);
       const detectedBadge = document.querySelector(".detected-badge");
       if (detectedBadge) detectedBadge.remove();
-      updateCount();
     });
   }
 

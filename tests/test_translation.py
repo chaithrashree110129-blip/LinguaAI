@@ -21,12 +21,12 @@ class DetectionTests(unittest.TestCase):
     def test_detects_each_supported_language(self):
         samples = {
             "en": "Good morning, how are you today?",
-            "es": "Buenos d\u00edas, \u00bfc\u00f3mo est\u00e1s hoy?",
+            "es": "Buenos días, ¿cómo estás hoy?",
             "fr": "Bonjour, comment allez-vous aujourd'hui?",
-            "kn": "\u0ca8\u0cae\u0cb8\u0ccd\u0c95\u0cbe\u0cb0, \u0ca8\u0cc0\u0cb5\u0cc1",
-            "hi": "\u0928\u092e\u0938\u094d\u0924\u0947, \u0906\u092a \u0915\u0948\u0938\u0947",
-            "ta": "\u0bb5\u0ba3\u0b95\u0bcd\u0b95\u0bae\u0bcd, \u0ba8\u0bc0\u0b99\u0bcd\u0b95\u0bb3\u0bcd",
-            "te": "\u0c39\u0c32\u0c4b, \u0c2e\u0c40\u0c30\u0c41 \u0c0e\u0c32\u0c3e",
+            "kn": "ನಮಸ್ಕಾರ, ನೀವು",
+            "hi": "नमस्ते, आप कैसे",
+            "ta": "வணக்கம், நீங்கள்",
+            "te": "హలో, మీరు ఎలా",
         }
         for expected, text in samples.items():
             with self.subTest(language=expected):
@@ -61,14 +61,14 @@ class TranslationTests(unittest.TestCase):
 
     def test_sarvam_request_uses_configured_key_and_real_response(self):
         response = FakeResponse(
-            {"translated_text": "\u0928\u092e\u0938\u094d\u0924\u0947"}
+            {"translated_text": "नमस्ते"}
         )
         with patch.object(config, "SARVAM_API_KEY", "unit-test-key"), patch(
             "translator.requests.post", return_value=response
         ) as post:
             result = translator.translate("Hello", "en", "hi")
 
-        self.assertEqual(result["translated_text"], "\u0928\u092e\u0938\u094d\u0924\u0947")
+        self.assertEqual(result["translated_text"], "नमस्ते")
         self.assertEqual(result["provider"], "sarvam")
         self.assertEqual(post.call_args.kwargs["headers"]["api-subscription-key"], "unit-test-key")
         self.assertEqual(
@@ -173,7 +173,7 @@ class WebsiteIntegrationTests(unittest.TestCase):
             patch.object(
                 app_module.translator,
                 "translate",
-                return_value={"translated_text": "\u0ca8\u0cae\u0cb8\u0ccd\u0c95\u0cbe\u0cb0"},
+                return_value={"translated_text": "ನಮಸ್ಕಾರ"},
             ),
             patch.object(app_module.database, "save_translation") as save_translation,
         ):
@@ -190,10 +190,11 @@ class WebsiteIntegrationTests(unittest.TestCase):
         body = response.get_data(as_text=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn("Detected: English (high confidence)", body)
-        self.assertIn("\u0ca8\u0cae\u0cb8\u0ccd\u0c95\u0cbe\u0cb0", body)
+        self.assertIn("ನಮಸ್ಕಾರ", body)
+        self.assertIn(">Hello</textarea>", body)
         save_translation.assert_called_once()
 
-    def test_swap_moves_output_back_to_input(self):
+    def test_swap_changes_languages_without_moving_panel_text(self):
         with (
             patch.object(app_module.database, "init_db"),
             patch.object(
@@ -216,8 +217,10 @@ class WebsiteIntegrationTests(unittest.TestCase):
         body = response.get_data(as_text=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn('name="input_text"', body)
-        self.assertIn(">Bonjour</textarea>", body)
-        self.assertIn(">Hello</div>", body)
+        self.assertIn(">Hello</textarea>", body)
+        self.assertIn(">Bonjour</div>", body)
+        self.assertIn('value="fr" selected', body)
+        self.assertIn('value="en" selected', body)
 
 
 if __name__ == "__main__":
